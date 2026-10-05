@@ -2,8 +2,11 @@ import type { User } from '@supabase/supabase-js'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Profile } from '~/types/database'
+import { useDemoMode } from '~/composables/useDemoMode'
+import { getDemoRepository } from '~/utils/demoRepository'
+import { demoUserId } from '~/utils/demoSeed'
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<User | null>(null)
+  const user = ref<Pick<User, 'id' | 'email' | 'created_at'> | null>(null)
   const profile = ref<Profile | null>(null)
   const ready = ref(false)
   let initialization: Promise<void> | null = null
@@ -14,6 +17,10 @@ export const useAuthStore = defineStore('auth', () => {
     useTransactionsStore().$reset()
   }
   async function loadProfile() {
+    if (useDemoMode()) {
+      profile.value = getDemoRepository().profile()
+      return
+    }
     if (!user.value) return
     const owner = user.value.id
     const { data, error } = await useDatabase()
@@ -27,6 +34,20 @@ export const useAuthStore = defineStore('auth', () => {
   async function initialize() {
     if (initialization) return initialization
     initialization = (async () => {
+      if (useDemoMode()) {
+        user.value = {
+          id: demoUserId,
+          email: 'alex@example.test',
+          created_at: new Date().toISOString(),
+        }
+        try {
+          profile.value = getDemoRepository().profile()
+        } catch {
+          /* The layout surfaces storage errors while keeping Reset demo accessible. */
+        }
+        ready.value = true
+        return
+      }
       if (!useNuxtApp().$supabaseConfigured) {
         ready.value = true
         return
@@ -82,6 +103,19 @@ export const useAuthStore = defineStore('auth', () => {
     clearData()
     await navigateTo('/login')
   }
+  async function saveProfile(values: { full_name: string; currency: string }) {
+    if (useDemoMode()) {
+      profile.value = getDemoRepository().saveProfile(values)
+      return
+    }
+    if (!user.value) throw new Error('Please sign in')
+    const { error } = await useDatabase()
+      .from('profiles')
+      .update(values)
+      .eq('id', user.value.id)
+    if (error) throw new Error(error.message)
+    await loadProfile()
+  }
   return {
     user,
     profile,
@@ -91,5 +125,6 @@ export const useAuthStore = defineStore('auth', () => {
     register,
     logout,
     loadProfile,
+    saveProfile,
   }
 })

@@ -8,6 +8,7 @@ const links = [
   { to: '/categories', label: 'Categories', icon: 'categories' },
 ]
 const auth = useAuthStore()
+const demo = useDemoMode()
 </script>
 <template>
   <aside
@@ -69,7 +70,9 @@ const auth = useAuthStore()
           <p class="truncate text-sm font-semibold">
             {{ auth.profile?.full_name || 'My account' }}
           </p>
-          <p class="text-xs text-slate-400">Personal workspace</p>
+          <p class="text-xs text-slate-400">
+            {{ demo ? 'Demo workspace' : 'Personal workspace' }}
+          </p>
         </div>
         <UiAppIcon name="chevron" :size="15" class="ml-auto"
       /></NuxtLink>

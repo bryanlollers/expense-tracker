@@ -1,10 +1,15 @@
 import type { Category } from '~/types/database'
 import { categorySchema } from '~/utils/finance'
+import { getDemoRepository } from '~/utils/demoRepository'
 export const useCategoriesStore = defineStore('categories', () => {
   const items = ref<Category[]>([])
   let request = 0
   async function fetch() {
     const current = ++request
+    if (useDemoMode()) {
+      items.value = getDemoRepository().categories()
+      return
+    }
     const { data, error } = await useDatabase()
       .from('categories')
       .select('*')
@@ -15,6 +20,11 @@ export const useCategoriesStore = defineStore('categories', () => {
   }
   async function save(input: unknown, id?: string) {
     const values = categorySchema.parse(input)
+    if (useDemoMode()) {
+      getDemoRepository().saveCategory(values, id)
+      await fetch()
+      return
+    }
     const client = useDatabase()
     const user = useAuthStore().user
     if (!user) throw new Error('Please sign in')
@@ -31,6 +41,11 @@ export const useCategoriesStore = defineStore('categories', () => {
     await fetch()
   }
   async function remove(id: string) {
+    if (useDemoMode()) {
+      getDemoRepository().removeCategory(id)
+      await fetch()
+      return
+    }
     const { error } = await useDatabase()
       .from('categories')
       .delete()

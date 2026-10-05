@@ -4,7 +4,9 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxt/eslint'],
   css: ['~/assets/css/main.css'],
-  runtimeConfig: { public: { supabaseUrl: '', supabaseKey: '' } },
+  runtimeConfig: {
+    public: { demoMode: true, supabaseUrl: '', supabaseKey: '' },
+  },
   app: {
     head: {
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],

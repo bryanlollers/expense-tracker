@@ -1,4 +1,8 @@
 import { test, expect } from '@playwright/test'
+test.skip(
+  process.env.NUXT_PUBLIC_DEMO_MODE !== 'false',
+  'Authentication tests run in Supabase mode',
+)
 test('protected pages redirect to login and preserve the requested path', async ({
   page,
 }) => {

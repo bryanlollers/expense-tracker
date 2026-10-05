@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const mobile = ref(false)
 const auth = useAuthStore()
+const demo = useDemoMode()
 const { error, run } = useFeedback()
 onMounted(() => {
   if (auth.user) void run(() => auth.loadProfile())
@@ -34,7 +35,9 @@ onMounted(() => {
         <NuxtLink
           to="/profile"
           class="flex items-center gap-2 rounded-lg text-sm"
-          ><span class="hidden text-slate-500 sm:block">Personal account</span
+          ><span class="hidden text-slate-500 sm:block">{{
+            demo ? 'Demo profile' : 'Personal account'
+          }}</span
           ><span
             class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 font-semibold text-emerald-800"
             >{{
@@ -46,6 +49,7 @@ onMounted(() => {
         >
       </header>
       <main id="main-content" class="mx-auto max-w-[1440px] p-5 sm:p-8">
+        <DemoBanner v-if="demo" />
         <UiFeedback :error="error" /><slot />
       </main>
       <footer

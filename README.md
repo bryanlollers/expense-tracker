@@ -1,11 +1,12 @@
 # Ledger · Personal Expense Tracker
 
-A full-stack personal finance workspace built with **Nuxt 3, Vue 3, TypeScript, and Supabase**. Ledger brings transactions, monthly budgets, private receipts, and financial reports together in a responsive interface.
+A public portfolio demo built with **Nuxt 3, Vue 3, TypeScript, and Supabase**. Ledger opens immediately with six months of sample financial data. No signup is required, and each visitor's edits stay in their browser. The complete authenticated Supabase application remains available as an optional configuration.
 
 This portfolio project demonstrates typed frontend architecture, authentication lifecycle management, database-enforced authorization, relational integrity, and automated testing. Supabase provides the backend; there is no separate REST server or backend framework.
 
 ## Features
 
+- Public demo by default: browser-local transactions, categories, budgets, profile preferences, and receipts; persistence across reloads and a confirmed reset action.
 - Email/password registration, email confirmation, persistent login, logout, protected routes, and account profiles.
 - Dashboard with monthly income and expenses, all-time ledger balance, remaining monthly budget, recent activity, category breakdown, and six-month trends.
 - Transaction creation, editing, deletion, detail views, description search, type/category/date filters, sorting, and server-side pagination.
@@ -17,14 +18,14 @@ This portfolio project demonstrates typed frontend architecture, authentication 
 
 ## Screenshots
 
-Screenshots are captured from a disposable local Supabase account by `npm run test:integration`. All amounts and account names are synthetic; production data is never used.
+Screenshots are captured from the public demo by `npm run test:e2e`. All amounts and account names are synthetic; production data is never used.
 
-![Desktop dashboard](docs/screenshots/dashboard.png)
+![Desktop dashboard](docs/screenshots/demo-dashboard.png)
 
 <details>
 <summary>Mobile workspace</summary>
 
-![Mobile dashboard](docs/screenshots/mobile.png)
+![Mobile dashboard](docs/screenshots/demo-mobile.png)
 
 </details>
 
@@ -44,6 +45,10 @@ Screenshots are captured from a disposable local Supabase account by `npm run te
 Use **Node 24 LTS** and npm. The lockfile pins the tested dependency graph. Nuxt is deliberately kept on major version 3 to match the project requirements.
 
 ## Architecture
+
+With `NUXT_PUBLIC_DEMO_MODE=true` (the default), stores use a validated local repository: financial records live in localStorage and receipt files live in IndexedDB. No Supabase client is created and no financial data or receipts are uploaded. Browser profiles have separate workspaces; tabs in the same browser share saved data. Clearing site storage removes edits. This is a sample workspace, not a secure vault for sensitive financial records. Reset restores sample data and removes demo receipts.
+
+With `NUXT_PUBLIC_DEMO_MODE=false`, the same pages and forms use Supabase authentication, PostgreSQL, and private Storage:
 
 ```mermaid
 flowchart LR
@@ -98,6 +103,8 @@ Category budgets sit within the overall budget; they are not summed into a secon
 
 ## Supabase setup
 
+These steps are only required for authenticated mode. The public demo needs no Supabase project or API key. Set `NUXT_PUBLIC_DEMO_MODE=false` to enable the backend.
+
 1. Create a Supabase project running PostgreSQL 15 or newer.
 2. In SQL Editor, run the files in [`supabase/migrations/`](supabase/migrations/) in filename order **before creating application users**. The initial migration creates tables, ownership policies, signup defaults, aggregate RPC, and the private receipt bucket; the second expands the supported profile currencies to 42. For an existing database, apply only migrations that have not yet been applied.
 3. Alternatively, install/use the CLI, run `npx supabase login`, `npx supabase link --project-ref YOUR_PROJECT_REF`, and `npx supabase db push`. Never run reset against a production database.
@@ -132,16 +139,17 @@ Security references: [Supabase RLS](https://supabase.com/docs/guides/database/po
 ```sh
 npm ci
 cp .env.example .env
-# Set your Supabase project URL and public key in .env.
+# Demo mode needs no credentials.
 npm run dev
 ```
 
-On PowerShell, use `Copy-Item .env.example .env` instead of `cp`. Open `http://localhost:3000`, register, confirm the email, and sign in. New accounts have default categories and an empty ledger. Without Supabase configuration, the login page displays setup instructions and disables authentication submission.
+On PowerShell, use `Copy-Item .env.example .env` instead of `cp`. Open `http://localhost:3000` to explore the sample workspace immediately. Login and register routes redirect to the dashboard in demo mode. For authenticated mode, set the flag to false and provide Supabase configuration; then register, confirm email, and sign in. New real accounts have default categories and an empty ledger.
 
-| Environment variable       | Required | Purpose                                             |
-| -------------------------- | -------- | --------------------------------------------------- |
-| `NUXT_PUBLIC_SUPABASE_URL` | Yes      | Supabase project API URL                            |
-| `NUXT_PUBLIC_SUPABASE_KEY` | Yes      | Public publishable or anon key; RLS enforces access |
+| Environment variable       | Required           | Purpose                                                         |
+| -------------------------- | ------------------ | --------------------------------------------------------------- |
+| `NUXT_PUBLIC_DEMO_MODE`    | No                 | Defaults to `true`; set `false` for authenticated Supabase mode |
+| `NUXT_PUBLIC_SUPABASE_URL` | Authenticated mode | Supabase project API URL                                        |
+| `NUXT_PUBLIC_SUPABASE_KEY` | Authenticated mode | Public publishable or anon key; RLS enforces access             |
 
 Restart the development server after changing environment variables. No database password, JWT secret, or service-role key is needed by the application.
 
@@ -157,7 +165,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-Unit and component tests cover persistent auth restoration, logout and account-switch isolation, unconfirmed signup, credentials errors, financial calculations, leap years, impossible dates, receipt constraints, formula-safe CSV, budget accessibility, and pagination boundaries. Browser smoke tests verify protected-route redirects and mobile registration.
+Unit and component tests cover persistent auth restoration, logout and account-switch isolation, unconfirmed signup, credentials errors, financial calculations, leap years, impossible dates, receipt constraints, formula-safe CSV, budget accessibility, pagination, demo persistence, relational guards, receipt cleanup, and corrupt-data recovery. Demo browser tests exercise edits, reload persistence, isolated visitors, receipts, budgets, export, reset, mobile navigation, and absence of Supabase requests.
 
 With local Supabase running:
 
@@ -174,10 +182,10 @@ GitHub Actions runs lint, formatting, type checks, unit tests, build, and browse
 
 1. Push the repository to GitHub and import it into Vercel.
 2. Use the Nuxt framework preset, Node 24, and the included `vercel.json` build command (`npm run build`). Nuxt/Nitro detects Vercel and emits its deployment output.
-3. Set both public Supabase variables for the intended Vercel environments. Use a separate Supabase project for testing or staging.
-4. Apply migrations to hosted Supabase before the first production sign-up.
-5. Configure the deployed origin and exact `/login` confirmation redirect in Supabase Auth. Preview origins need their own allowed callback URLs if signup is tested there.
-6. Deploy, register a test account, confirm email, and check transaction CRUD, private receipts, and a second account's isolation.
+3. Set `NUXT_PUBLIC_DEMO_MODE=true`. No Supabase variables are required for the public demo.
+4. Deploy and verify sample data, editing, browser persistence, reset, and mobile navigation.
+
+For authenticated deployment, set `NUXT_PUBLIC_DEMO_MODE=false` and both public Supabase variables. Apply migrations before signup, configure the deployed origin and exact `/login` callback in Supabase Auth, and verify email confirmation, transaction CRUD, receipts, and account isolation. Use a separate Supabase project for staging.
 
 For an already-built standalone preview, provide the same runtime environment and run `node .output/server/index.mjs`; `.env` is not automatically loaded by that production command. Vercel supplies environment variables to its runtime.
 

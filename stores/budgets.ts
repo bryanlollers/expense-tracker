@@ -1,10 +1,15 @@
 import type { Budget } from '~/types/database'
 import { budgetSchema } from '~/utils/finance'
+import { getDemoRepository } from '~/utils/demoRepository'
 export const useBudgetsStore = defineStore('budgets', () => {
   const items = ref<Budget[]>([])
   let request = 0
   async function fetch(month: string) {
     const current = ++request
+    if (useDemoMode()) {
+      items.value = getDemoRepository().budgets(month)
+      return
+    }
     const { data, error } = await useDatabase()
       .from('budgets')
       .select('*')
@@ -16,6 +21,11 @@ export const useBudgetsStore = defineStore('budgets', () => {
   }
   async function save(input: unknown, id?: string) {
     const values = budgetSchema.parse(input)
+    if (useDemoMode()) {
+      getDemoRepository().saveBudget(values, id)
+      await fetch(values.month)
+      return
+    }
     const user = useAuthStore().user
     if (!user) throw new Error('Please sign in')
     const client = useDatabase()
@@ -32,6 +42,11 @@ export const useBudgetsStore = defineStore('budgets', () => {
     await fetch(values.month)
   }
   async function remove(id: string) {
+    if (useDemoMode()) {
+      getDemoRepository().removeBudget(id)
+      items.value = items.value.filter((b) => b.id !== id)
+      return
+    }
     const { error } = await useDatabase().from('budgets').delete().eq('id', id)
     if (error) throw new Error(error.message)
     items.value = items.value.filter((v) => v.id !== id)
@@ -40,5 +55,16 @@ export const useBudgetsStore = defineStore('budgets', () => {
     ++request
     items.value = []
   }
-  return { items, fetch, save, remove, $reset }
+  async function range(start: string, end: string) {
+    if (useDemoMode()) return getDemoRepository().budgets(start, end)
+    const { data, error } = await useDatabase()
+      .from('budgets')
+      .select('*')
+      .gte('month', `${start.slice(0, 7)}-01`)
+      .lte('month', `${end.slice(0, 7)}-01`)
+      .order('month', { ascending: false })
+    if (error) throw new Error(error.message)
+    return data
+  }
+  return { items, fetch, save, remove, range, $reset }
 })

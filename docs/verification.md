@@ -2,22 +2,23 @@
 
 Verified locally on October 5, 2026 (Asia/Shanghai), using Windows, Node 22.13.1, npm 10.9.2, Chromium, and a disposable Docker Supabase stack with PostgreSQL 15.19. Node 24 LTS is recommended for development and used by CI; some transitive CLI tools require a newer Node version than the local host.
 
-| Check                     | Result                                                                                                    |
-| ------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Clean lockfile install    | `npm ci` supported; lockfile synchronized                                                                 |
-| ESLint                    | Pass                                                                                                      |
-| Prettier                  | Pass                                                                                                      |
-| Strict TypeScript         | Pass                                                                                                      |
-| Unit/component tests      | 36 pass                                                                                                   |
-| PostgreSQL migration      | Applied successfully on local Supabase                                                                    |
-| pgTAP security tests      | 26 pass                                                                                                   |
-| Playwright smoke tests    | 2 pass                                                                                                    |
-| Real Supabase integration | Auth, persistence, transactions, receipts, category ownership, budgets, export, mobile navigation, logout |
-| Nuxt production build     | Pass (standalone and Vercel presets)                                                                      |
-| Hosted Vercel deployment  | Prepared; not deployed                                                                                    |
-| Hosted Supabase project   | Connected; both migrations applied; RLS and private receipt bucket verified                               |
+| Check                        | Result                                                                                                    |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Clean lockfile install       | `npm ci` supported; lockfile synchronized                                                                 |
+| ESLint                       | Pass                                                                                                      |
+| Prettier                     | Pass                                                                                                      |
+| Strict TypeScript            | Pass                                                                                                      |
+| Unit/component tests         | 43 pass                                                                                                   |
+| PostgreSQL migration         | Applied successfully on local Supabase                                                                    |
+| pgTAP security tests         | 26 pass                                                                                                   |
+| Public demo browser tests    | 2 pass: persistence, visitor isolation, local receipts, CRUD, export, reset, mobile, no Supabase requests |
+| Authentication browser tests | 2 pass in authenticated mode                                                                              |
+| Real Supabase integration    | Auth, persistence, transactions, receipts, category ownership, budgets, export, mobile navigation, logout |
+| Nuxt production build        | Pass (standalone and Vercel presets)                                                                      |
+| Hosted Vercel deployment     | Prepared; not deployed                                                                                    |
+| Hosted Supabase project      | Connected; both migrations applied; RLS and private receipt bucket verified                               |
 
-Screenshots use a temporary test account and synthetic financial records. Integration fixtures are removed after each run. No hosted-account credentials or service-role keys are stored in the repository. The ignored `.env` contains the hosted Supabase URL and public publishable key. Local-stack configuration is retained in a Git-ignored backup.
+Demo screenshots use browser-local synthetic records. Supabase integration screenshots use a temporary test account; integration fixtures are removed after each run. No hosted-account credentials or service-role keys are stored in the repository. The ignored `.env` contains the hosted Supabase URL and public publishable key, which are unused by the default public demo. Local-stack configuration is retained in a Git-ignored backup.
 
 At final verification, `npm audit` reports 16 advisories: 14 high and 2 low; none are critical.
 

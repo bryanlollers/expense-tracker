@@ -2,6 +2,7 @@
 import { z } from 'zod'
 import { currencyOptions, currencySchema } from '~/utils/currencies'
 const auth = useAuthStore()
+const demo = useDemoMode()
 const { error, success, pending, run } = useFeedback()
 const logout = useFeedback()
 const form = reactive({ full_name: '', currency: 'USD' })
@@ -22,12 +23,7 @@ async function save() {
         currency: currencySchema,
       })
       .parse(form)
-    const { error: dbError } = await useDatabase()
-      .from('profiles')
-      .update(values)
-      .eq('id', auth.user!.id)
-    if (dbError) throw new Error(dbError.message)
-    await auth.loadProfile()
+    await auth.saveProfile(values)
   }, 'Profile updated.')
 }
 </script>
@@ -63,7 +59,13 @@ async function save() {
               type="email"
               disabled
             />
-            <p class="text-xs text-slate-400">Your verified account email.</p>
+            <p class="text-xs text-slate-400">
+              {{
+                demo
+                  ? 'Sample identity for this demo. No account is required.'
+                  : 'Your verified account email.'
+              }}
+            </p>
           </div>
           <div class="field">
             <label for="currency">Display currency</label
@@ -92,12 +94,18 @@ async function save() {
           class="mb-4 inline-flex rounded-xl bg-emerald-50 p-3 text-emerald-700"
           ><UiAppIcon name="shield" :size="24"
         /></span>
-        <h2 class="text-sm font-bold">Your private workspace</h2>
-        <p class="muted mt-3 leading-relaxed">
+        <h2 class="text-sm font-bold">
+          {{ demo ? 'Your demo workspace' : 'Your private workspace' }}
+        </h2>
+        <p v-if="demo" class="muted mt-3 leading-relaxed">
+          Explore with fictional financial data. Changes and receipts stay in
+          this browser. Reset the demo whenever you want a fresh start.
+        </p>
+        <p v-else class="muted mt-3 leading-relaxed">
           Only your account can access your transactions, budgets, categories,
           and receipts.
         </p>
-        <p class="mt-5 text-xs text-slate-400">
+        <p v-if="!demo" class="mt-5 text-xs text-slate-400">
           Member since
           {{
             auth.user?.created_at
@@ -109,6 +117,7 @@ async function save() {
           }}
         </p>
         <button
+          v-if="!demo"
           class="btn-secondary mt-6 w-full"
           :disabled="logout.pending.value"
           @click="logout.run(() => auth.logout())"
