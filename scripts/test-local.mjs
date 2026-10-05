@@ -17,6 +17,7 @@ const result = spawnSync(command, ['playwright', 'test'], {
   stdio: 'inherit',
   env: {
     ...process.env,
+    NUXT_PUBLIC_DEMO_MODE: 'false',
     NUXT_PUBLIC_SUPABASE_URL: status.API_URL,
     NUXT_PUBLIC_SUPABASE_KEY: status.ANON_KEY,
     SUPABASE_TEST_SERVICE_ROLE_KEY: status.SERVICE_ROLE_KEY,

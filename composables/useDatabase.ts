@@ -1,6 +1,6 @@
 export function useDatabase() {
   const { $supabase, $supabaseConfigured } = useNuxtApp()
-  if (!$supabaseConfigured)
+  if (!$supabaseConfigured || !$supabase)
     throw new Error(
       'Supabase is not configured. Set the variables in .env.example and restart the app.',
     )

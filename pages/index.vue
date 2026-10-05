@@ -47,26 +47,19 @@ async function load() {
   const version = ++generation
   await run(async () => {
     const range = monthRange(month.value)
-    const client = useDatabase()
     const results = await Promise.all([
       categories.fetch(),
       budgets.fetch(month.value),
       transactions.summary(range.start, range.end),
       transactions.summary('0001-01-01', '9999-12-31'),
       transactions.summary(chartStart.value, range.end),
-      client
-        .from('transactions')
-        .select('*')
-        .order('transaction_date', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(5),
+      transactions.recent(),
     ])
     if (version !== generation) return
     current.value = results[2]
     allTime.value = results[3]
     history.value = results[4]
-    if (results[5].error) throw new Error(results[5].error.message)
-    recent.value = results[5].data
+    recent.value = results[5]
   })
 }
 onMounted(load)

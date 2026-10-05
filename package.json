@@ -13,7 +13,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "test:e2e": "playwright test tests/e2e/auth.spec.ts",
+    "test:e2e": "playwright test tests/e2e/demo.spec.ts",
     "test:integration": "node scripts/test-local.mjs",
     "test:db": "npx supabase@2.119.0 test db"
   },

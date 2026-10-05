@@ -5,6 +5,7 @@ import { fillMonths } from '~/utils/charts'
 const transactions = useTransactionsStore()
 const categories = useCategoriesStore()
 const auth = useAuthStore()
+const budgets = useBudgetsStore()
 const initial = monthRange(localDate().slice(0, 7))
 const start = ref(initial.start)
 const end = ref(initial.end)
@@ -46,13 +47,7 @@ async function load() {
     const range = { start: start.value, end: end.value }
     await categories.fetch()
     const report = await transactions.summary(range.start, range.end)
-    const { data, error: dbError } = await useDatabase()
-      .from('budgets')
-      .select('*')
-      .gte('month', `${range.start.slice(0, 7)}-01`)
-      .lte('month', `${range.end.slice(0, 7)}-01`)
-      .order('month', { ascending: false })
-    if (dbError) throw new Error(dbError.message)
+    const data = await budgets.range(range.start, range.end)
     const fullMonths = await Promise.all(
       months.map(async (m) => {
         const dates = monthRange(m.month)

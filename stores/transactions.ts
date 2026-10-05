@@ -4,6 +4,7 @@ import type {
   TransactionType,
 } from '~/types/database'
 import { transactionSchema, validateReceipt } from '~/utils/finance'
+import { getDemoRepository } from '~/utils/demoRepository'
 export interface TransactionFilters {
   search: string
   type: TransactionType | ''
@@ -21,6 +22,12 @@ export const useTransactionsStore = defineStore('transactions', () => {
   let request = 0
   async function fetch(filters: TransactionFilters) {
     const current = ++request
+    if (useDemoMode()) {
+      const result = getDemoRepository().transactions(filters, pageSize)
+      items.value = result.items
+      count.value = result.count
+      return
+    }
     let query = useDatabase()
       .from('transactions')
       .select('*', { count: 'exact' })
@@ -47,6 +54,7 @@ export const useTransactionsStore = defineStore('transactions', () => {
     count.value = total ?? 0
   }
   async function get(id: string) {
+    if (useDemoMode()) return getDemoRepository().getTransaction(id)
     const { data, error } = await useDatabase()
       .from('transactions')
       .select('*')
@@ -61,6 +69,7 @@ export const useTransactionsStore = defineStore('transactions', () => {
     return data
   }
   async function summary(start: string, end: string): Promise<FinanceSummary> {
+    if (useDemoMode()) return getDemoRepository().summary(start, end)
     const { data, error } = await useDatabase().rpc('finance_summary', {
       start_date: start,
       end_date: end,
@@ -75,6 +84,13 @@ export const useTransactionsStore = defineStore('transactions', () => {
     removeReceipt = false,
   ) {
     const values = transactionSchema.parse(input)
+    if (useDemoMode())
+      return getDemoRepository().saveTransaction(
+        values,
+        id,
+        file,
+        removeReceipt,
+      )
     const client = useDatabase()
     const user = useAuthStore().user
     if (!user) throw new Error('Please sign in')
@@ -126,6 +142,10 @@ export const useTransactionsStore = defineStore('transactions', () => {
     return data
   }
   async function remove(id: string) {
+    if (useDemoMode()) {
+      await getDemoRepository().removeTransaction(id)
+      return
+    }
     const transaction = await get(id)
     const client = useDatabase()
     const { error } = await client.from('transactions').delete().eq('id', id)
@@ -139,6 +159,7 @@ export const useTransactionsStore = defineStore('transactions', () => {
     }
   }
   async function receiptUrl(path: string) {
+    if (useDemoMode()) return getDemoRepository().receiptUrl(path)
     const { data, error } = await useDatabase()
       .storage.from('receipts')
       .createSignedUrl(path, 60)
@@ -146,6 +167,7 @@ export const useTransactionsStore = defineStore('transactions', () => {
     return data.signedUrl
   }
   async function exportRows(start: string, end: string) {
+    if (useDemoMode()) return getDemoRepository().exportRows(start, end)
     const result: Transaction[] = []
     let offset = 0
     while (true) {
@@ -169,6 +191,17 @@ export const useTransactionsStore = defineStore('transactions', () => {
     items.value = []
     count.value = 0
   }
+  async function recent(limit = 5) {
+    if (useDemoMode()) return getDemoRepository().recent(limit)
+    const { data, error } = await useDatabase()
+      .from('transactions')
+      .select('*')
+      .order('transaction_date', { ascending: false })
+      .order('created_at', { ascending: false })
+      .limit(limit)
+    if (error) throw new Error(error.message)
+    return data
+  }
   return {
     items,
     count,
@@ -180,6 +213,7 @@ export const useTransactionsStore = defineStore('transactions', () => {
     remove,
     receiptUrl,
     exportRows,
+    recent,
     $reset,
   }
 })

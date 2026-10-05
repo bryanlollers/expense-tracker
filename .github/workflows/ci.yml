@@ -16,7 +16,7 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npx playwright install --with-deps chromium
-      - run: npx playwright test tests/e2e/auth.spec.ts
+      - run: npm run test:e2e
   database:
     runs-on: ubuntu-latest
     steps:

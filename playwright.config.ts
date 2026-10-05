@@ -8,6 +8,7 @@ export default defineConfig({
   },
   webServer: {
     command: 'npm run dev',
+    env: { NUXT_PUBLIC_DEMO_MODE: process.env.NUXT_PUBLIC_DEMO_MODE || 'true' },
     url: 'http://localhost:3000',
     reuseExistingServer:
       !process.env.CI && !process.env.SUPABASE_TEST_SERVICE_ROLE_KEY,

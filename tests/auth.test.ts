@@ -15,6 +15,7 @@ const client = {
 }
 beforeEach(() => {
   setActivePinia(createPinia())
+  vi.stubGlobal('useRuntimeConfig', () => ({ public: { demoMode: false } }))
   vi.stubGlobal('useNuxtApp', () => ({ $supabaseConfigured: true }))
   vi.stubGlobal('useDatabase', () => client)
   vi.stubGlobal('useCategoriesStore', () => ({ $reset: reset }))
@@ -35,6 +36,16 @@ beforeEach(() => {
   })
 })
 describe('authentication state', () => {
+  it('opens a demo identity without restoring or contacting Supabase', async () => {
+    vi.stubGlobal('useRuntimeConfig', () => ({ public: { demoMode: true } }))
+    localStorage.clear()
+    const store = useAuthStore()
+    await store.initialize()
+    expect(store.ready).toBe(true)
+    expect(store.profile?.full_name).toBe('Alex Morgan')
+    expect(client.auth.getSession).not.toHaveBeenCalled()
+    expect(client.from).not.toHaveBeenCalled()
+  })
   it('restores the persistent session once across concurrent route checks', async () => {
     const store = useAuthStore()
     await Promise.all([store.initialize(), store.initialize()])
