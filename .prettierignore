@@ -1,0 +1,9 @@
+node_modules
+.nuxt
+.output
+package-lock.json
+coverage
+127.0.0.1
+test-results
+playwright-report
+.vercel
