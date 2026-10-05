@@ -1,6 +1,6 @@
 # Expense Tracker
 
-[**Try the live demo**](https://expense-tracker-ayiqkhuve-bryanlollers.vercel.app)
+[**Try the live demo**](https://expense-tracker-iota-flax-96.vercel.app)
 
 A public portfolio demo built with **Nuxt 3, Vue 3, TypeScript, and Supabase**. Expense Tracker opens immediately with six months of sample financial data. No signup is required, and each visitor's edits stay in their browser. The complete authenticated Supabase application remains available as an optional configuration.
 
