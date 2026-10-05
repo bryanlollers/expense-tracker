@@ -1,6 +1,6 @@
 # Expense Tracker
 
-[**Live demo**](https://expense-tracker-iota-flax-96.vercel.app)
+[**Live demo**](https://expense-tracker-bryanlollers.vercel.app)
 
 A responsive personal finance portfolio project built with Nuxt 3, Vue 3, TypeScript, Tailwind CSS, Pinia, and Supabase.
 
