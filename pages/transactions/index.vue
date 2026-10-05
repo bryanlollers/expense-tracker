@@ -55,7 +55,7 @@ async function saved() {
   await load()
   success.value = 'Transaction added.'
 }
-useHead({ title: 'Transactions · Ledger' })
+useHead({ title: 'Transactions · Expense Tracker' })
 </script>
 <template>
   <div>
@@ -163,8 +163,8 @@ useHead({ title: 'Transactions · Ledger' })
       />
     </div>
     <p class="mt-4 text-xs text-slate-400">
-      Your ledger is up to date as of {{ localDate() }}. Amounts use your
-      profile currency.
+      Your transaction history is up to date as of {{ localDate() }}. Amounts
+      use your profile currency.
     </p>
     <UiBaseModal
       v-if="showForm"

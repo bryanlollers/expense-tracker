@@ -55,7 +55,7 @@ onMounted(() => {
       <footer
         class="mx-auto flex max-w-[1440px] justify-between px-8 pb-6 text-xs text-slate-400"
       >
-        <span>Ledger · Make room for what matters.</span
+        <span>Expense Tracker · Make room for what matters.</span
         ><span>Personal finance, simplified.</span>
       </footer>
     </div>

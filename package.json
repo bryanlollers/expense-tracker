@@ -1,5 +1,5 @@
 {
-  "name": "ledger-expense-tracker",
+  "name": "expense-tracker",
   "private": true,
   "type": "module",
   "scripts": {

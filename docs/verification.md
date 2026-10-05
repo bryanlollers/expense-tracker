@@ -1,5 +1,7 @@
 # Verification record
 
+Public demo: [Expense Tracker on Vercel](https://expense-tracker-ayiqkhuve-bryanlollers.vercel.app).
+
 Verified locally on October 5, 2026 (Asia/Shanghai), using Windows, Node 22.13.1, npm 10.9.2, Chromium, and a disposable Docker Supabase stack with PostgreSQL 15.19. Node 24 LTS is recommended for development and used by CI; some transitive CLI tools require a newer Node version than the local host.
 
 | Check                        | Result                                                                                                    |

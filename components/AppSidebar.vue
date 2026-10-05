@@ -20,8 +20,8 @@ const demo = useDemoMode()
       @click="emit('navigate')"
       ><span class="rounded-xl bg-emerald-700 p-2 text-white"
         ><UiAppIcon name="leaf" :size="23" /></span
-      ><span class="text-2xl font-bold tracking-tight"
-        >ledger<span class="text-emerald-600">.</span></span
+      ><span class="text-lg font-bold tracking-tight"
+        >Expense Tracker</span
       ></NuxtLink
     >
     <p

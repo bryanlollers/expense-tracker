@@ -109,7 +109,7 @@ async function exportCsv() {
     )
     const link = document.createElement('a')
     link.href = url
-    link.download = `ledger-${applied.value.start}-${applied.value.end}.csv`
+    link.download = `expense-tracker-${applied.value.start}-${applied.value.end}.csv`
     link.click()
     URL.revokeObjectURL(url)
   }, 'CSV exported.')

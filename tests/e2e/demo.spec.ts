@@ -99,7 +99,7 @@ test('public demo persists edits, isolates visitors, exports and resets without 
   await page.goto('/reports')
   const download = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Export CSV' }).click()
-  expect((await download).suggestedFilename()).toContain('ledger-')
+  expect((await download).suggestedFilename()).toContain('expense-tracker-')
   await page.getByRole('button', { name: 'Reset demo', exact: true }).click()
   await page
     .getByRole('dialog')
