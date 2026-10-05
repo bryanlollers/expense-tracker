@@ -1,29 +1,11 @@
-# Verification record
+# Verification
 
-Public demo: [Expense Tracker on Vercel](https://expense-tracker-ayiqkhuve-bryanlollers.vercel.app).
+[Live demo](https://expense-tracker-iota-flax-96.vercel.app)
 
-Verified locally on October 5, 2026 (Asia/Shanghai), using Windows, Node 22.13.1, npm 10.9.2, Chromium, and a disposable Docker Supabase stack with PostgreSQL 15.19. Node 24 LTS is recommended for development and used by CI; some transitive CLI tools require a newer Node version than the local host.
+Verified October 5, 2026 with Chromium and a disposable local Supabase stack. CI uses Node 24 LTS.
 
-| Check                        | Result                                                                                                    |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Clean lockfile install       | `npm ci` supported; lockfile synchronized                                                                 |
-| ESLint                       | Pass                                                                                                      |
-| Prettier                     | Pass                                                                                                      |
-| Strict TypeScript            | Pass                                                                                                      |
-| Unit/component tests         | 43 pass                                                                                                   |
-| PostgreSQL migration         | Applied successfully on local Supabase                                                                    |
-| pgTAP security tests         | 26 pass                                                                                                   |
-| Public demo browser tests    | 2 pass: persistence, visitor isolation, local receipts, CRUD, export, reset, mobile, no Supabase requests |
-| Authentication browser tests | 2 pass in authenticated mode                                                                              |
-| Real Supabase integration    | Auth, persistence, transactions, receipts, category ownership, budgets, export, mobile navigation, logout |
-| Nuxt production build        | Pass (standalone and Vercel presets)                                                                      |
-| Hosted Vercel deployment     | Prepared; not deployed                                                                                    |
-| Hosted Supabase project      | Connected; both migrations applied; RLS and private receipt bucket verified                               |
+- Lint, formatting, TypeScript, and production builds pass.
+- 43 unit/component tests, 2 demo browser tests, 3 authenticated browser tests, and 26 database security tests pass.
+- Tests cover authentication, calculations, validation, demo persistence, visitor isolation, receipts, and RLS. Temporary integration accounts are removed afterward.
 
-Demo screenshots use browser-local synthetic records. Supabase integration screenshots use a temporary test account; integration fixtures are removed after each run. No hosted-account credentials or service-role keys are stored in the repository. The ignored `.env` contains the hosted Supabase URL and public publishable key, which are unused by the default public demo. Local-stack configuration is retained in a Git-ignored backup.
-
-At final verification, `npm audit` reports 16 advisories: 14 high and 2 low; none are critical.
-
-The dependency audit is not clean. The Nuxt 3/Tailwind 3 dependency graph includes upstream advisories with no compatible patched registry releases available at this date. Audit suggestions involving major framework downgrades were not applied. Vitest was updated to 4.1.11 to address its reported mock-server advisory. Review `npm audit` again before deployment; passing application tests does not resolve upstream security advisories.
-
-Receipt writes and database writes are not one atomic transaction. Compensating cleanup handles common failures; network failures can leave unused private objects. The README documents this limitation and scheduled reconciliation as future work.
+Known limitations: the last dependency audit reported 16 upstream advisories (14 high, 2 low). Receipt and database writes are separate operations, so failed cleanup can leave unused private objects. Display currencies do not convert amounts.
