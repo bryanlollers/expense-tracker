@@ -110,7 +110,7 @@ async function submit() {
       </button>
     </form>
     <p class="muted mt-7 text-center">
-      {{ register ? 'Already have an account?' : 'New to Ledger?' }}
+      {{ register ? 'Already have an account?' : 'New to Expense Tracker?' }}
       <NuxtLink
         :to="register ? '/login' : '/register'"
         class="font-semibold text-emerald-700"

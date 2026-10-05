@@ -1,6 +1,8 @@
-# Ledger · Personal Expense Tracker
+# Expense Tracker
 
-A public portfolio demo built with **Nuxt 3, Vue 3, TypeScript, and Supabase**. Ledger opens immediately with six months of sample financial data. No signup is required, and each visitor's edits stay in their browser. The complete authenticated Supabase application remains available as an optional configuration.
+[**Try the live demo**](https://expense-tracker-ayiqkhuve-bryanlollers.vercel.app)
+
+A public portfolio demo built with **Nuxt 3, Vue 3, TypeScript, and Supabase**. Expense Tracker opens immediately with six months of sample financial data. No signup is required, and each visitor's edits stay in their browser. The complete authenticated Supabase application remains available as an optional configuration.
 
 This portfolio project demonstrates typed frontend architecture, authentication lifecycle management, database-enforced authorization, relational integrity, and automated testing. Supabase provides the backend; there is no separate REST server or backend framework.
 
@@ -8,7 +10,7 @@ This portfolio project demonstrates typed frontend architecture, authentication 
 
 - Public demo by default: browser-local transactions, categories, budgets, profile preferences, and receipts; persistence across reloads and a confirmed reset action.
 - Email/password registration, email confirmation, persistent login, logout, protected routes, and account profiles.
-- Dashboard with monthly income and expenses, all-time ledger balance, remaining monthly budget, recent activity, category breakdown, and six-month trends.
+- Dashboard with monthly income and expenses, all-time balance, remaining monthly budget, recent activity, category breakdown, and six-month trends.
 - Transaction creation, editing, deletion, detail views, description search, type/category/date filters, sorting, and server-side pagination.
 - Custom income and expense categories with icons and colors; ten defaults created automatically on signup.
 - Overall monthly budgets and category limits with actual spending, remaining amounts, percentages, and overspending indicators.
@@ -143,7 +145,7 @@ cp .env.example .env
 npm run dev
 ```
 
-On PowerShell, use `Copy-Item .env.example .env` instead of `cp`. Open `http://localhost:3000` to explore the sample workspace immediately. Login and register routes redirect to the dashboard in demo mode. For authenticated mode, set the flag to false and provide Supabase configuration; then register, confirm email, and sign in. New real accounts have default categories and an empty ledger.
+On PowerShell, use `Copy-Item .env.example .env` instead of `cp`. Open `http://localhost:3000` to explore the sample workspace immediately. Login and register routes redirect to the dashboard in demo mode. For authenticated mode, set the flag to false and provide Supabase configuration; then register, confirm email, and sign in. New real accounts have default categories and an empty transaction history.
 
 | Environment variable       | Required           | Purpose                                                         |
 | -------------------------- | ------------------ | --------------------------------------------------------------- |

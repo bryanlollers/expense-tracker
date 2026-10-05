@@ -21,7 +21,7 @@ describe('financial calculations', () => {
       ]),
     ).toEqual({ income: 0.3, expense: 10 })
   })
-  it('handles empty ledgers', () =>
+  it('handles empty transaction histories', () =>
     expect(totals([])).toEqual({ income: 0, expense: 0 }))
   it('reports overspending without hiding the excess', () =>
     expect(budgetProgress(100, 125)).toEqual({

@@ -211,7 +211,7 @@ async function remove() {
     ><UiConfirmDialog
       v-if="deleting"
       title="Delete budget?"
-      description="This removes the spending limit. Your transactions will stay in your ledger."
+      description="This removes the spending limit. Your transactions will remain unchanged."
       :pending="mutation.pending.value"
       :error="mutation.error.value"
       @close="deleting = undefined"

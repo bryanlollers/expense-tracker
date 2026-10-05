@@ -4,7 +4,7 @@
       class="relative hidden flex-col justify-between overflow-hidden bg-[#073d31] p-14 text-white lg:flex"
     >
       <NuxtLink to="/login" class="flex items-center gap-2 text-2xl font-bold"
-        ><UiAppIcon name="leaf" :size="30" />ledger.</NuxtLink
+        ><UiAppIcon name="leaf" :size="30" />Expense Tracker</NuxtLink
       >
       <div class="relative z-10 max-w-lg">
         <p
@@ -50,7 +50,7 @@
         <div
           class="mb-10 flex items-center gap-2 text-xl font-bold text-emerald-800 lg:hidden"
         >
-          <UiAppIcon name="leaf" />ledger.
+          <UiAppIcon name="leaf" />Expense Tracker
         </div>
         <slot />
       </div>

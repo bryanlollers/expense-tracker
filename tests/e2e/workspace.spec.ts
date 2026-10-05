@@ -15,7 +15,7 @@ test('real Supabase workspace: CRUD, budgets, export, receipts, and account isol
   expect(url).toMatch(/^http:\/\/(127\.0\.0\.1|localhost):54321$/)
   test.setTimeout(120000)
   const admin = createClient(url, adminKey, { auth: { persistSession: false } })
-  const password = `Ledger-${crypto.randomUUID()}`
+  const password = `Expense Tracker-${crypto.randomUUID()}`
   const email = `portfolio-${Date.now()}@example.test`
   const created = await admin.auth.admin.createUser({
     email,
@@ -244,7 +244,7 @@ test('real Supabase workspace: CRUD, budgets, export, receipts, and account isol
     ).toHaveCount(0)
     const download = page.waitForEvent('download')
     await page.getByRole('button', { name: 'Export CSV' }).click()
-    expect((await download).suggestedFilename()).toContain('ledger-')
+    expect((await download).suggestedFilename()).toContain('expense-tracker-')
     await page.setViewportSize({ width: 390, height: 844 })
     await page.goto('/')
     await expect(
