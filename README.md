@@ -1,12 +1,12 @@
 # Expense Tracker
 
-[**Live demo**](https://expense-tracker-bryanlollers.vercel.app)
+[**Live app**](https://expense-tracker-bryanlollers.vercel.app)
 
 A responsive personal finance portfolio project built with Nuxt 3, Vue 3, TypeScript, Tailwind CSS, Pinia, and Supabase.
 
-## Demo
+## Getting started
 
-Explore six months of sample data without signing up. Your transactions, budgets, profile changes, and receipts stay in your browser. Reset demo restores the sample workspace.
+Create an account or sign in to manage your transactions, budgets, categories, and profile. Account data is stored in Supabase, with receipts kept in private Storage.
 
 ## Features
 
@@ -23,11 +23,11 @@ Explore six months of sample data without signing up. Your transactions, budgets
 
 ## Engineering highlights
 
-Vue Composition API, reusable components, focused Pinia stores, typed composables, and shared validation keep the application organized. The public demo uses localStorage for records and IndexedDB for receipts.
+Vue Composition API, reusable components, focused Pinia stores, typed composables, and shared validation keep the application organized.
 
-The project also includes Supabase authentication, PostgreSQL migrations, and private Storage. Row Level Security enforces ownership on profiles, categories, transactions, and budgets. Composite foreign keys prevent cross-account category references.
+The application uses Supabase authentication, PostgreSQL migrations, and private Storage. Row Level Security enforces ownership on profiles, categories, transactions, and budgets. Composite foreign keys prevent cross-account category references.
 
-Automated tests cover authentication, financial calculations, validation, demo persistence, visitor isolation, receipts, and database security. See the [verification record](docs/verification.md).
+Automated tests cover authentication, financial calculations, validation, receipts, and database security. See the [verification record](docs/verification.md).
 
 Display currencies relabel amounts without conversion.
 
