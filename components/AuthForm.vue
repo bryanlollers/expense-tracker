@@ -4,6 +4,7 @@ const auth = useAuthStore()
 const route = useRoute()
 const email = ref('')
 const password = ref('')
+const confirmPassword = ref('')
 const name = ref('')
 const sent = ref(false)
 const { error, pending, run } = useFeedback()
@@ -14,6 +15,8 @@ async function submit() {
       if (name.value.trim().length < 1) throw new Error('Enter your name')
       if (password.value.length < 8)
         throw new Error('Use at least 8 characters')
+      if (password.value !== confirmPassword.value)
+        throw new Error('Passwords do not match')
       const loggedIn = await auth.register(
         email.value.trim(),
         password.value,
@@ -101,6 +104,24 @@ async function submit() {
           Use at least 8 characters.
         </p>
       </div>
+      <div v-if="register" class="field">
+        <label for="confirm-password">Confirm password</label>
+        <input
+          id="confirm-password"
+          v-model="confirmPassword"
+          type="password"
+          required
+          minlength="8"
+          autocomplete="new-password"
+          placeholder="Re-enter your password"
+        />
+      </div>
+      <NuxtLink
+        v-if="!register"
+        to="/forgot-password"
+        class="block text-sm font-semibold text-emerald-700"
+        >Forgot password?</NuxtLink
+      >
       <UiFeedback :error="error" /><button
         class="btn w-full"
         :disabled="pending || !configured"

@@ -65,7 +65,12 @@ export const useAuthStore = defineStore('auth', () => {
         user.value = next
         if (
           !next &&
-          !['/login', '/register'].includes(window.location.pathname)
+          ![
+            '/login',
+            '/register',
+            '/forgot-password',
+            '/reset-password',
+          ].includes(window.location.pathname)
         )
           void navigateTo('/login')
       })
@@ -103,6 +108,21 @@ export const useAuthStore = defineStore('auth', () => {
     clearData()
     await navigateTo('/login')
   }
+  async function requestPasswordReset(email: string) {
+    const { error } = await useDatabase().auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    })
+    if (error) throw new Error(error.message)
+  }
+  async function resetPassword(password: string) {
+    if (password.length < 8) throw new Error('Use at least 8 characters')
+    if (!user.value)
+      throw new Error(
+        'This reset link is invalid or expired. Request a new link.',
+      )
+    const { error } = await useDatabase().auth.updateUser({ password })
+    if (error) throw new Error(error.message)
+  }
   async function saveProfile(values: { full_name: string; currency: string }) {
     if (useDemoMode()) {
       profile.value = getDemoRepository().saveProfile(values)
@@ -123,6 +143,8 @@ export const useAuthStore = defineStore('auth', () => {
     initialize,
     login,
     register,
+    requestPasswordReset,
+    resetPassword,
     logout,
     loadProfile,
     saveProfile,
