@@ -25,6 +25,30 @@ const icons = [
   'heart',
   'briefcase',
   'laptop',
+  'coffee',
+  'groceries',
+  'bus',
+  'bike',
+  'plane',
+  'fuel',
+  'electricity',
+  'water',
+  'wifi',
+  'phone',
+  'education',
+  'books',
+  'fitness',
+  'pets',
+  'gift',
+  'music',
+  'gaming',
+  'clothing',
+  'baby',
+  'repairs',
+  'cash',
+  'bank',
+  'savings',
+  'donations',
   'circle',
   'plus',
 ]
@@ -165,6 +189,7 @@ async function remove() {
                   : 'border-slate-200 text-slate-400'
               "
               :aria-label="icon"
+              :title="icon.charAt(0).toUpperCase() + icon.slice(1)"
               :aria-pressed="form.icon === icon"
               @click="form.icon = icon"
             >

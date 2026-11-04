@@ -16,14 +16,9 @@ onBeforeUnmount(() => {
   <Teleport to="body"
     ><dialog
       ref="dialog"
-      class="m-auto w-[calc(100%-2rem)] max-w-lg rounded-2xl border-0 p-0 shadow-2xl backdrop:bg-slate-900/40"
+      class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto overscroll-contain rounded-2xl border-0 p-0 shadow-2xl backdrop:bg-slate-900/40"
       aria-labelledby="modal-title"
       @cancel.prevent="emit('close')"
-      @click="
-        (e) => {
-          if (e.target === dialog) emit('close')
-        }
-      "
     >
       <div class="p-6">
         <div class="mb-5 flex items-center justify-between">
