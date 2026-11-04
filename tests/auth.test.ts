@@ -10,6 +10,8 @@ const client = {
     signInWithPassword: vi.fn(),
     signUp: vi.fn(),
     signOut: vi.fn(),
+    resetPasswordForEmail: vi.fn(),
+    updateUser: vi.fn(),
   },
   from: vi.fn(),
 }
@@ -36,6 +38,43 @@ beforeEach(() => {
   })
 })
 describe('authentication state', () => {
+  it('sends recovery email with the reset page redirect and surfaces failures', async () => {
+    const store = useAuthStore()
+    client.auth.resetPasswordForEmail.mockResolvedValue({ error: null })
+    await store.requestPasswordReset('alice@test.dev')
+    expect(client.auth.resetPasswordForEmail).toHaveBeenCalledWith(
+      'alice@test.dev',
+      {
+        redirectTo: `${window.location.origin}/reset-password`,
+      },
+    )
+    client.auth.resetPasswordForEmail.mockResolvedValue({
+      error: { message: 'Try again later' },
+    })
+    await expect(store.requestPasswordReset('alice@test.dev')).rejects.toThrow(
+      'Try again later',
+    )
+  })
+  it('requires a session and a strong password before updating credentials', async () => {
+    const store = useAuthStore()
+    await expect(store.resetPassword('new-password')).rejects.toThrow(
+      'invalid or expired',
+    )
+    await store.initialize()
+    await expect(store.resetPassword('short')).rejects.toThrow('8 characters')
+    expect(client.auth.updateUser).not.toHaveBeenCalled()
+    client.auth.updateUser.mockResolvedValue({ error: null })
+    await store.resetPassword('new-password')
+    expect(client.auth.updateUser).toHaveBeenCalledWith({
+      password: 'new-password',
+    })
+    client.auth.updateUser.mockResolvedValue({
+      error: { message: 'Expired session' },
+    })
+    await expect(store.resetPassword('new-password')).rejects.toThrow(
+      'Expired session',
+    )
+  })
   it('opens a demo identity without restoring or contacting Supabase', async () => {
     vi.stubGlobal('useRuntimeConfig', () => ({ public: { demoMode: true } }))
     localStorage.clear()

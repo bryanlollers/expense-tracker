@@ -23,6 +23,9 @@ Create an account or sign in to manage your transactions, budgets, categories, a
 - Dashboard charts, monthly and category budgets, and CSV reports.
 - Custom categories, 42 display currencies, and receipts up to 5 MB.
 - Responsive desktop and mobile layouts with accessible forms and feedback.
+- Registration password confirmation and email-based password recovery.
+
+For password recovery, allow your app’s `/reset-password` URL in Supabase Authentication → URL Configuration → Redirect URLs (for example, `https://your-domain.com/reset-password`). Local development is configured for `http://localhost:3000/reset-password`. Configure Supabase email delivery for your deployed app.
 
 ## Screenshots
 
@@ -42,4 +45,4 @@ Display currencies relabel amounts without conversion.
 
 ## Future improvements
 
-Recurring transactions, CSV import, password recovery, and receipt OCR.
+Recurring transactions, CSV import, and receipt OCR.
