@@ -10,9 +10,9 @@ onMounted(() => {
 <template>
   <div class="min-h-screen">
     <div class="fixed inset-y-0 left-0 hidden lg:block"><AppSidebar /></div>
-    <div class="lg:pl-64">
+    <div class="flex min-h-screen flex-col lg:pl-64">
       <header
-        class="flex h-[76px] items-center justify-between border-b border-slate-200/80 bg-white px-5 sm:px-8"
+        class="flex h-[76px] shrink-0 items-center justify-between border-b border-slate-200/80 bg-white px-5 sm:px-8"
       >
         <div class="flex items-center gap-3">
           <button
@@ -48,12 +48,15 @@ onMounted(() => {
           ></NuxtLink
         >
       </header>
-      <main id="main-content" class="mx-auto max-w-[1440px] p-5 sm:p-8">
+      <main
+        id="main-content"
+        class="mx-auto w-full max-w-[1440px] flex-1 p-5 sm:p-8"
+      >
         <DemoBanner v-if="demo" />
         <UiFeedback :error="error" /><slot />
       </main>
       <footer
-        class="mx-auto flex max-w-[1440px] justify-between px-8 pb-6 text-xs text-slate-400"
+        class="mx-auto flex w-full max-w-[1440px] shrink-0 flex-wrap justify-between gap-2 px-5 pb-6 text-xs text-slate-400 sm:px-8"
       >
         <span>Expense Tracker · Make room for what matters.</span
         ><span>Personal finance, simplified.</span>
