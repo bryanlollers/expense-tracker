@@ -3,6 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
+  html:has(dialog[open]),
+  html:has(dialog[open]) body {
+    overflow: hidden;
+  }
+
   body {
     @apply bg-[#f6f8fa] text-slate-800 antialiased;
     font-family: 'DM Sans', sans-serif;

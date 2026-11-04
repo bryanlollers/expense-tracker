@@ -6,6 +6,7 @@ const links = [
   { to: '/budgets', label: 'Budgets', icon: 'budgets' },
   { to: '/reports', label: 'Reports', icon: 'reports' },
   { to: '/categories', label: 'Categories', icon: 'categories' },
+  { to: '/about', label: 'About', icon: 'info' },
 ]
 const auth = useAuthStore()
 const demo = useDemoMode()

@@ -4,6 +4,15 @@
 
 A responsive personal finance portfolio project built with Nuxt 3, Vue 3, TypeScript, Tailwind CSS, Pinia, and Supabase.
 
+## About
+
+- This app is a portfolio project for demonstration and educational purposes only.
+- The brand name is a fictional placeholder, not an actual business or a claim to a registered trademark. Any resemblance to existing brands is coincidental; no affiliation or endorsement is implied.
+- This app is not monetized.
+- Stored data, including accounts, transactions, and receipts, may be deleted at any time without notice. Availability and data retention are not guaranteed.
+- Use sample data only. Do not upload sensitive personal, financial, or payment information, and do not rely on this app as your only financial record.
+- The app does not provide financial, investment, tax, or accounting advice.
+
 ## Getting started
 
 Create an account or sign in to manage your transactions, budgets, categories, and profile. Account data is stored in Supabase, with receipts kept in private Storage.
