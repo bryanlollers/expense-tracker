@@ -1,5 +1,28 @@
 ﻿<script setup lang="ts">
 useHead({ title: 'About | Expense Tracker' })
+const techStack = [
+  {
+    category: 'Frontend',
+    tools: [
+      'Nuxt 3',
+      'Vue 3',
+      'TypeScript',
+      'Tailwind CSS',
+      'Lucide',
+      'Pinia',
+      'Zod',
+    ],
+  },
+  {
+    category: 'Backend and storage',
+    tools: ['Supabase Auth', 'PostgreSQL', 'Supabase Storage'],
+  },
+  {
+    category: 'Deployment and version control',
+    tools: ['Vercel', 'Git', 'GitHub'],
+  },
+  { category: 'AI tools', tools: ['Codex'] },
+]
 </script>
 
 <template>
@@ -10,14 +33,16 @@ useHead({ title: 'About | Expense Tracker' })
     />
     <div class="max-w-5xl space-y-6">
       <section class="card" aria-labelledby="about-project">
-        <span
-          class="mb-5 inline-flex rounded-xl bg-emerald-50 p-3 text-emerald-700"
-        >
-          <UiAppIcon name="leaf" :size="24" aria-hidden="true" />
-        </span>
-        <h2 id="about-project" class="text-xl font-bold tracking-tight">
-          A clearer view of everyday finances
-        </h2>
+        <div class="flex items-center gap-3">
+          <span
+            class="inline-flex shrink-0 rounded-xl bg-emerald-50 p-3 text-emerald-700"
+          >
+            <UiAppIcon name="leaf" :size="24" aria-hidden="true" />
+          </span>
+          <h2 id="about-project" class="text-xl font-bold tracking-tight">
+            A clearer view of everyday finances
+          </h2>
+        </div>
         <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
           Expense Tracker brings transactions, budgets, and spending reports
           into one workspace. It was built as a portfolio and educational
@@ -108,6 +133,63 @@ useHead({ title: 'About | Expense Tracker' })
           coincidental; no affiliation or endorsement is implied.
         </p>
       </section>
+
+      <div class="card">
+        <section aria-labelledby="about-developer">
+          <div class="flex items-center gap-3">
+            <span
+              class="inline-flex rounded-xl bg-emerald-50 p-3 text-emerald-700"
+            >
+              <UiAppIcon name="code" :size="24" aria-hidden="true" />
+            </span>
+            <h2 id="about-developer" class="text-base font-bold">
+              Development
+            </h2>
+          </div>
+          <p class="mt-4 text-sm leading-relaxed text-slate-600">
+            Developed by
+            <span class="font-semibold text-slate-800">bryanlollers</span>,
+            Expense Tracker is a hands-on portfolio project exploring
+            application design, account authentication, data management, and
+            responsive user interfaces. The project brings these elements
+            together in a practical workflow for tracking everyday finances.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-3">
+            <a href="https://github.com/bryanlollers" class="btn-secondary"
+              >Developer on GitHub</a
+            >
+            <a
+              href="https://github.com/bryanlollers/expense-tracker"
+              class="btn-secondary"
+              >View source code</a
+            >
+          </div>
+        </section>
+
+        <section
+          class="mt-6 border-t border-slate-200 pt-6"
+          aria-labelledby="tech-stack"
+        >
+          <h2 id="tech-stack" class="text-base font-bold">Technology stack</h2>
+          <dl class="mt-5 grid gap-6 md:grid-cols-2">
+            <div
+              v-for="group in techStack"
+              :key="group.category"
+              class="min-w-0"
+            >
+              <dt class="text-sm font-semibold">{{ group.category }}</dt>
+              <dd class="mt-3 flex flex-wrap gap-2">
+                <span
+                  v-for="tool in group.tools"
+                  :key="tool"
+                  class="inline-flex rounded border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
+                  >{{ tool }}</span
+                >
+              </dd>
+            </div>
+          </dl>
+        </section>
+      </div>
     </div>
   </div>
 </template>
