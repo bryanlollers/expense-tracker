@@ -8,7 +8,7 @@ A responsive personal finance portfolio project built with Nuxt 3, Vue 3, TypeSc
 
 - This app is a portfolio project for demonstration and educational purposes only.
 - The brand name is a fictional placeholder, not an actual business or a claim to a registered trademark. Any resemblance to existing brands is coincidental; no affiliation or endorsement is implied.
-- This app is not monetized.
+- This app is not monetized. It is provided free of charge as a portfolio and educational project, with no paid subscriptions, premium features, advertisements, or affiliate links. It is not intended to generate revenue.
 - Stored data, including accounts, transactions, and receipts, may be deleted at any time without notice. Availability and data retention are not guaranteed.
 - Use sample data only. Do not upload sensitive personal, financial, or payment information, and do not rely on this app as your only financial record.
 - The app does not provide financial, investment, tax, or accounting advice.
