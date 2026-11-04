@@ -18,8 +18,8 @@ const techStack = [
     tools: ['Supabase Auth', 'PostgreSQL', 'Supabase Storage'],
   },
   {
-    category: 'Deployment and version control',
-    tools: ['Vercel', 'Git', 'GitHub'],
+    category: 'Development workflow',
+    tools: ['Vercel', 'Git', 'GitHub', 'GitHub Actions'],
   },
   { category: 'AI tools', tools: ['Codex'] },
 ]
